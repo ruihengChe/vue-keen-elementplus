@@ -1,11 +1,13 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import Layout from "../views/Layout/indexView.vue";
 
 const routes = [
   {
     path: "/",
     name: "home",
-    // redirect: "Login",
-    redirect: "HomeView",
+    component: Layout,
+    redirect: "Login",
+    // redirect: "HomeView",
   },
   {
     path: "/login",

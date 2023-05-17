@@ -24,7 +24,8 @@
         <!-- <el-main></el-main> -->
         <el-container>
             <el-header class="layout-header">导航路由</el-header>
-            <el-main class="layout-main">main</el-main>
+            <el-main class="layout-main">
+            </el-main>
         </el-container>
     </el-container>
 </template>
