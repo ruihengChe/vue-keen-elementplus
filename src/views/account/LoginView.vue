@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-
+// import downloadPdf from '@/api/downloadPdf'
 import { reactive, ref } from 'vue'
 import { login } from '@/api/login'
 
@@ -47,7 +47,7 @@ const loginView = async () => {
     }
   })
 }
-//下载pdf
+// 下载pdf
 // const downloadFile = async () => {
 //   const result = await downloadPdf()
 //   console.log(result.data.pdfUrl);
@@ -120,6 +120,9 @@ const loginView = async () => {
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    .uploadpdf{
+      visibility: hidden;
+    }
   }
 
   .login-form {

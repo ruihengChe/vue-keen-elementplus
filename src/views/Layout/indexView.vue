@@ -2,6 +2,7 @@
     <el-container class="layout-main">
         <!-- 左侧菜单 -->
         <el-aside width="200px" class="layout-aside">
+            <asideView></asideView>
             <el-menu class="layout-menu" :default-active="1" :default-openeds="['1', '3']">
                 <el-sub-menu index="1">
                     <template #title>
@@ -21,15 +22,19 @@
             </el-menu>
         </el-aside>
         <!-- 右侧内容区域 -->
-        <!-- <el-main></el-main> -->
         <el-container>
-            <el-header class="layout-header">导航路由</el-header>
+            <el-header class="layout-header">
+                <headerView></headerView>
+            </el-header>
             <el-main class="layout-main">
+                <mainView></mainView>
             </el-main>
         </el-container>
     </el-container>
 </template>
-<script></script>
+<script>
+
+</script>
 
 <style scoped lang="scss">
 .layout-main {

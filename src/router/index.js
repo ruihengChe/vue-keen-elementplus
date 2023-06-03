@@ -9,6 +9,13 @@ const routes = [
     redirect: "Login",
     // redirect: "HomeView",
   },
+  //
+  {
+    path: "/layout",
+    name: "Layout",
+    component: () =>
+      import(/* webpackChunkName: "Login" */ "../views/Layout/indexView.vue"),
+  },
   {
     path: "/login",
     name: "Login",

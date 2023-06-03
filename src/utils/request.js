@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 const request = axios.create({
     // baseURL: 'http://yiken.top:3000',
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL: process.env.VUE_APP_BASE_API,
     timeout: 500
 });
 
@@ -20,7 +21,17 @@ request.interceptors.request.use(
 request.interceptors.response.use(
     response => {
         //对响应数据做些事
-        return response;
+        // return response;
+        const data = response.data;
+        if(data.code === 200){
+            return Promise.resolve(data);
+        } else {
+            ElMessage({
+                message: data.message || 'Error',
+                type: 'error',
+            })
+            return Promise.reject(data);
+        }
     },
     error => {
         return Promise.reject(error);
