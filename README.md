@@ -1,4 +1,4 @@
-# vue-plus-admin
+# plus
 
 ## Project setup
 ```
