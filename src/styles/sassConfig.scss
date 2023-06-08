@@ -1,0 +1,10 @@
+@mixin webkit($attr, $value) {
+    #{-webkit-#{$attr}}: $value;
+    #{-moz-#{$attr}}: $value;
+    #{-o-#{$attr}}: $value;
+    #{-ms-#{$attr}}: $value;
+    #{$attr}: $value;
+}
+
+// layout的header的高度
+$layoutHeaderHeight: 75px;
