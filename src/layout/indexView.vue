@@ -1,6 +1,6 @@
 <template>
   <el-container id="layout-container">
-    <el-aside id="layout-aside" width="250px">
+    <el-aside id="layout-aside" :width="isCollapse === true ? '60px' : '250px'">
       <aside-view></aside-view>
     </el-aside>
     <el-container>
@@ -18,6 +18,11 @@
 import AsideView from './component/asideView.vue'
 import HeaderView from './component/headerView.vue'
 import MainView from './component/mainView.vue'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+const isCollapse = computed(() => store.state.app.isCollapse)
 </script>
 
 <style lang="scss" scoped>
@@ -26,7 +31,10 @@ import MainView from './component/mainView.vue'
 }
 #layout-aside {
   background-color: #344a5f;
+  overflow-x: hidden;
   // @include webkit(transition, all .3s ease 0s);
+  transition: all .3s ease 0s;
+  // transition: width .3s ease;
 }
 #layout-header {
   position: relative;

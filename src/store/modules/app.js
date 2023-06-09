@@ -3,7 +3,9 @@ const state = {
 }
 
 const mutations = {
-
+  SET_COLLAPSE: (state) => {
+    state.isCollapse = !state.isCollapse
+  }
 }
 
 const actions = {
