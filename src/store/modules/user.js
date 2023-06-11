@@ -1,33 +1,37 @@
+import { setToken, setUserName } from '@/utils/cookies'
 const state = {
-  username: 'admin',
-  token: null,
-  role: null
+    username: '',
+    token: '',
+    role: ''
 }
 
 const getters = {
-  username: state => state.username,
-  token: state => state.token,
-  role: state => state.role
+    username: state => state.username,
+    token: state => state.token,
+    role: state => state.role
 }
 
 const mutations = {
-  SET_USER (state, payload) {
-    state.username = payload.username
-    state.token = payload.token
-    state.role = payload.role
-  }
+    SET_TOKEN (state, value) {
+        state.token = value
+        value && setToken(value)
+    },
+    SET_USERNAME (state, value) {
+        state.username = value
+        value && setUserName(value)
+    }
 }
 
 const actions = {
-  setUser ({ commit }, user) {
-    commit('SET_USER', user)
-  }
+    setUser ({ commit }, user) {
+        commit('SET_USER', user)
+    }
 }
 
 export default {
-  namespaced: true,
-  state,
-  getters,
-  mutations,
-  actions
+    namespaced: true,
+    state,
+    getters,
+    mutations,
+    actions
 }
