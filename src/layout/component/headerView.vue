@@ -12,11 +12,11 @@
           </el-icon>
         </span>
         <div class="breadcrumb-wrap">
-          <el-breadcrumb :separator-icon="ArrowRight" separator="/">
+          <el-breadcrumb :separator-icon="ArrowRight">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>promotion management</el-breadcrumb-item>
-            <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-            <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item, index) in routers" :key="index.path" :to="{ path: item?.path }">
+              {{ item?.meta?.title }}
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </div>
@@ -69,12 +69,21 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 
 const store = useStore()
-const { options } = useRouter()
+// const { options } = useRouter()
+const router = useRouter()
 const { path } = useRoute()
-const routers = options.routes
-console.log('routers', routers)
+// const routers = options.routes
+// console.log('routers', routers)
 console.log('path', path)
+console.log('当前路由', router.currentRoute.value.matched)
 
+const routers = computed(() => {
+    // 过滤掉没有meta的
+    return router.currentRoute.value.matched.filter(item => item.meta && item.meta.title)
+})
+
+const ArrowRight = ref('ArrowRight')
+const removeTab = ref('removeTab')
 const isCollapse = computed(() => store.state.app.isCollapse)
 const changeCol = () => {
     store.commit('app/SET_COLLAPSE', !isCollapse.value)
@@ -93,6 +102,22 @@ const editableTabs = ref([
         content: 'Tab 2 content'
     }
 ])
+
+// 面包屑处理
+// const breadcrumbs = ref([])
+// const getBreadcrumbs = (route) => {
+//     const breadcrumbs = []
+//     route.matched.forEach((record) => {
+//         if (record.meta && record.meta.title) {
+//             breadcrumbs.push({
+//                 title: record.meta.title,
+//                 path: record.path
+//             })
+//         }
+//     })
+//     return breadcrumbs
+// }
+
 </script>
 
 <style lang="scss" scoped>
@@ -164,12 +189,14 @@ const editableTabs = ref([
   color: #afafaf;
   border: none !important;
 }
+
 ::v-deep .el-tabs--card>.el-tabs__header .el-tabs__nav {
   border: none !important;
   border-radius: 4px 4px 0 0;
   box-sizing: border-box;
 }
-::v-deep .el-tabs__header{
-  border-bottom: none!important;
+
+::v-deep .el-tabs__header {
+  border-bottom: none !important;
 }
 </style>
