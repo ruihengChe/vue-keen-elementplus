@@ -1,12 +1,14 @@
 <template>
-  <div class="logo"><img :src="logo" alt=""><span v-show="!isCollapse" class="tiltle-top">项目管理系统</span></div>
-  <el-menu :collapse="isCollapse" :default-active="currentPath" background-color="#344a5f" text-color="#fff"
-    active-text-color="#409eff" router active-class="menu-active" class="el-menu-aside">
+  <div class="logo"><img :src="logo" alt="" >
+    <span v-show="!isCollapse" class="tiltle-top">项目管理系统</span>
+  </div>
+  <el-menu :collapse="isCollapse" :default-active="currentMenu" background-color="#344a5f" text-color="#fff"
+    active-text-color="#409eff" :router="false" active-class="menu-active" class="el-menu-aside">
     <template v-for="item in routers" :key="item.path">
       <template v-if="!item.hidden">
         <!-- 一级菜单 -->
         <template v-if="hasOnlyChild(item.children)">
-          <el-menu-item :index="item.children[0].path">
+          <el-menu-item :index="item.children[0].path + ''"  @click="handleClickMenu(item.children[0])" :key="item.children[0].path">
             <el-icon :size="20">
               <component :is="item.children[0].meta.icon" class="menu-icon "></component>
             </el-icon>
@@ -15,7 +17,7 @@
         </template>
         <!-- 子级菜单 -->
         <template v-else>
-          <el-sub-menu v-if="item.children && item.children.length > 0" :index="item.path">
+          <el-sub-menu v-if="item.children && item.children.length > 0" :index="item.path + ''" :key="item.path">
             <template #title>
               <el-icon :size="20">
                 <component :is="item.meta.icon" class="menu-icon "></component>
@@ -23,7 +25,7 @@
               <span>{{ item.meta && item.meta.title }}</span>
             </template>
             <template v-for="child in item.children" :key="child.path">
-              <el-menu-item v-if="!child.hidden" :index="child.path">
+              <el-menu-item v-if="!child.hidden" :index="child.path + ''" :key="child.path" @click="handleClickMenu(child)">
                 <el-icon :size="20">
                   <component :is="child.meta.icon" class="menu-icon "></component>
                 </el-icon>
@@ -38,17 +40,17 @@
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
 const isCollapse = computed(() => store.state.app.isCollapse)
 const { options } = useRouter()
-const { path } = useRoute()
+const router = useRouter()
 const routers = options.routes
 const logo = require('@/assets/logo.png')
-console.log(routers)
+
 // 判断是否只有一个子菜单
 const hasOnlyChild = (children) => {
     // 不存在子级路由
@@ -67,9 +69,15 @@ const hasOnlyChild = (children) => {
     // 否则
     return false
 }
+// const menu = computed(() => store.state.tab.menu)
 
-// 获取当前路由
-const currentPath = computed(() => path)
+const currentMenu = computed(() => store.state.tab.currentMenu?.path)
+// 点击菜单
+const handleClickMenu = (subItem) => {
+    router.push(subItem.path)
+    store.commit('tab/selectMenu', subItem)
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -104,6 +112,14 @@ const currentPath = computed(() => path)
   margin: 0 5px 0 0;
 }
 
+// ::v-deep .el-menu-item{
+//   &.is-active{
+//     background-color: #fff !important;
+//   }
+// }
+// .is-active {
+//   background-color: #f5f5f5 !important;
+// }
 .menu-active {
   background-color: #fff !important;
 }

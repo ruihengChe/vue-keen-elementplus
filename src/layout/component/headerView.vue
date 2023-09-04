@@ -1,6 +1,5 @@
 <template>
-  <div class="layout-header">
-    <!-- 左侧菜单按钮 面包屑 用户 -->
+  <div class="layout-header" >
     <div class="header-wrap">
       <div class="left-wrap">
         <span class="menu-btn" @click="changeCol">
@@ -13,9 +12,9 @@
         </span>
         <div class="breadcrumb-wrap">
           <el-breadcrumb :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item v-for="(item, index) in routers" :key="index.path" :to="{ path: item?.path }">
-              {{ item?.meta?.title }}
+            <el-breadcrumb-item :to="{ path: '/dashboard' }">控制台</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: myCurrentMenu?.path }" v-if="myCurrentMenu && myCurrentMenu?.path !== '/dashboard'">
+              {{ myCurrentMenu?.meta?.title }}
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -30,19 +29,10 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
-                  <el-icon>
-                    <User />
-                  </el-icon>{{}}
+                  个人中心
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <el-icon>
-                    <Edit />
-                  </el-icon>{{}}
-                </el-dropdown-item>
-                <el-dropdown-item divided>
-                  <el-icon>
-                    <SwitchButton />
-                  </el-icon>{{}}
+                  退出
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -50,16 +40,7 @@
         </div>
       </div>
     </div>
-    <!-- tabs -->
-    <div class="header-wrap-bottom">
-      <div class="tabs-box">
-        <el-tabs v-model="editableTabsValue" type="card" class="demo-tabs" closable @tab-remove="removeTab">
-          <el-tab-pane v-for="item in editableTabs" :key="item.name" :label="item.title" :name="item.name">
-            首页
-          </el-tab-pane>
-        </el-tabs>
-      </div>
-    </div>
+    <tabs />
   </div>
 </template>
 
@@ -67,56 +48,27 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+// import tabs from './tabs.vue'
 
 const store = useStore()
-// const { options } = useRouter()
 const router = useRouter()
 const { path } = useRoute()
-// const routers = options.routes
-// console.log('routers', routers)
+
 console.log('path', path)
 console.log('当前路由', router.currentRoute.value.matched)
 
-const routers = computed(() => {
-    // 过滤掉没有meta的
-    return router.currentRoute.value.matched.filter(item => item.meta && item.meta.title)
-})
-
+// const routers = computed(() => {
+//     // 过滤掉没有meta的
+//     return router.currentRoute.value.matched.filter(item => item.meta && item.meta.title)
+// })
+const myCurrentMenu = computed(() => store.state.tab.currentMenu)
+console.log('myCurrentMenu', myCurrentMenu.value)
 const ArrowRight = ref('ArrowRight')
-const removeTab = ref('removeTab')
 const isCollapse = computed(() => store.state.app.isCollapse)
 const changeCol = () => {
     store.commit('app/SET_COLLAPSE', !isCollapse.value)
     console.log(isCollapse.value)
 }
-const editableTabsValue = ref('2')
-const editableTabs = ref([
-    {
-        title: 'Tab 1',
-        name: '1',
-        content: 'Tab 1 content'
-    },
-    {
-        title: 'Tab 2',
-        name: '2',
-        content: 'Tab 2 content'
-    }
-])
-
-// 面包屑处理
-// const breadcrumbs = ref([])
-// const getBreadcrumbs = (route) => {
-//     const breadcrumbs = []
-//     route.matched.forEach((record) => {
-//         if (record.meta && record.meta.title) {
-//             breadcrumbs.push({
-//                 title: record.meta.title,
-//                 path: record.path
-//             })
-//         }
-//     })
-//     return breadcrumbs
-// }
 
 </script>
 
@@ -168,35 +120,4 @@ const editableTabs = ref([
   white-space: no-wrap;
 }
 
-// tabs
-.header-wrap-bottom {
-  background: #fff;
-  box-sizing: border-box;
-  height: 40px;
-  padding: 0 10px;
-  margin: 0;
-}
-
-.tabs-box {
-  position: inherit;
-  width: 100%;
-}
-
-::v-deep .el-tabs__item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #afafaf;
-  border: none !important;
-}
-
-::v-deep .el-tabs--card>.el-tabs__header .el-tabs__nav {
-  border: none !important;
-  border-radius: 4px 4px 0 0;
-  box-sizing: border-box;
-}
-
-::v-deep .el-tabs__header {
-  border-bottom: none !important;
-}
 </style>

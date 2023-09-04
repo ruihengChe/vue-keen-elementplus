@@ -23,9 +23,14 @@
 </template>
 
 <script setup>
-// import downloadPdf from '@/api/downloadPdf'
 import { reactive, ref } from 'vue'
-import { login } from '@/api/login'
+import { permission } from '@/api/login'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const store = useStore()
 
 const form = reactive({
     username: '',
@@ -41,9 +46,19 @@ const loginView = async () => {
     loginForm.value.validate(async valid => {
         if (valid) {
             // TODO: 登录逻辑
-            const { username: userName, password } = form
-            const result = await login({ userName, password })
-            console.log(result)
+            const { username, password } = form
+            const result = await permission({ username, password })
+            if (result.code === 200) {
+                store.commit('tab/clearMenu')
+                store.commit('tab/setMenu', result.data.menu)
+                // store.commit('setToken', res.data.token)
+                store.commit('tab/addMenu', router)
+                console.log('路由表：', router)
+                router.push('/')
+            } else {
+                // this.$message.warning(result.data.message)
+            }
+            console.log('menu:', store.state.tab.menu)
         }
     })
 }
@@ -88,6 +103,7 @@ const loginView = async () => {
             font-size: 40px;
             font-weight: 600;
             color: #0066ff;
+            color: #ffffff;
             height: 81px;
             text-align: center;
             line-height: 81px;

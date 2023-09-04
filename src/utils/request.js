@@ -5,7 +5,6 @@ const request = axios.create({
     baseURL: 'http://127.0.0.1:3001',
     timeout: 3000
 })
-console.log(process.env.VUE_APP_BASE_API)
 // 请求拦截器
 request.interceptors.request.use(
     config => {

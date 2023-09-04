@@ -1,14 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import Layout from '../layout/indexView.vue'
+// import HomeView from '../views/HomeView.vue'
+import Layout from '../layout/layoutView.vue'
 
 const routes = [
-    {
-        path: '/',
-        name: 'home',
-        hidden: true,
-        component: HomeView
-    },
     // 登录
     {
         path: '/login',
@@ -18,7 +12,7 @@ const routes = [
     },
     // 控制台
     {
-        path: '/console',
+        path: '/',
         name: 'console',
         component: Layout,
         children: [
@@ -27,16 +21,17 @@ const routes = [
                 name: 'dashboard',
                 meta: {
                     title: '控制台',
-                    icon: 'HomeFilled'
+                    icon: 'HomeFilled',
+                    isfixed: true
                 },
-                component: () => import(/* webpackChunkName: "dashboard" */ '../views/console/indexView.vue')
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/console/consoleView.vue')
             }
         ]
     },
     // 用户管理
     {
-        path: '/users',
-        name: 'users',
+        path: '/user',
+        name: 'user',
         component: Layout,
         children: [
             {
@@ -46,7 +41,7 @@ const routes = [
                     title: '用户管理',
                     icon: 'Avatar'
                 },
-                component: () => import(/* webpackChunkName: "dashboard" */ '../views/users/indexView.vue')
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/users/usersView.vue')
             }
         ]
     },
@@ -77,6 +72,23 @@ const routes = [
                     icon: 'UploadFilled'
                 },
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/plugins/uploadView.vue')
+            }
+        ]
+    },
+    // 开发日志
+    {
+        path: '/log',
+        name: 'log',
+        component: Layout,
+        children: [
+            {
+                path: '/logs',
+                name: 'logs',
+                meta: {
+                    title: '开发日志',
+                    icon: 'Avatar'
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/logs.vue')
             }
         ]
     }

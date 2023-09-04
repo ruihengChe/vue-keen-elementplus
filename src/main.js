@@ -8,6 +8,8 @@ import '@/styles/sassConfig.scss'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconVue from '@element-plus/icons-vue'
+import './mock/index.js'
+import './permission.js'
 
 const app = createApp(App)
 // 全局注册图标组件
